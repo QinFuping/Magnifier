@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Magnifier</title>
+    <style>
+        html,body,div{
+            margin: 0;
+            padding: 0;
+        }
+        .wrapper{
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin: 50px auto;
+            border: 2px solid black;
+        }
+        .pic{
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .pic>img{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+        .slide{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 50%;
+            cursor: none;
+            display: none;
+            border: 2px solid black;
+        }
+        .slide img{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1000px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper" id="wrapper">
+        <div class="pic">
+            <img id="pic-sub" src="image/hebe4.png">
+        </div>
+        <div class="slide" id="slide">
+            <img id="slide-img" src="">
+        </div>
+    </div>
+    <script>
+        var small=document.getElementById('pic-sub');
+        var big=document.getElementById('slide-img');
+        var wrap=document.getElementById('wrapper');
+        var slide=document.getElementById('slide');
+        big.src=small.src;
+        wrap.onmouseover=function(){
+            slide.style.display='block';
+            wrap.onmousemove=function (e) {
+                var e=event||window.event;
+                var sWidth=slide.offsetWidth;
+                var sl=e.pageX-wrap.offsetLeft-sWidth/2;
+                var st=e.pageY-wrap.offsetTop-sWidth/2;
+                if(sl<0){
+                    sl=0;
+                }
+                if(sl>(wrap.clientWidth-sWidth)){
+                    sl=wrap.clientWidth-sWidth;
+                }
+                if(st<0){
+                    st=0;
+                }
+                if(st>(wrap.clientWidth-sWidth)){
+                    st=wrap.clientWidth-sWidth;
+                }
+                slide.style.left=sl+'px';
+                slide.style.top=st+'px';
+                var k=(big.offsetWidth-slide.offsetWidth)/(wrap.offsetWidth-slide.offsetWidth);
+                //console.log(k);
+                big.style.left=-(sl*k)+'px';
+                big.style.top=-(st*k)+'px';
+            }
+        }
+        wrap.onmouseout=function(){
+            slide.style.display='none';
+            wrap.onmousemove=null;
+        }
+    </script>
+</body>
+</html>
